@@ -2,7 +2,7 @@ version: "3.2"
 services:
   flask:
     environment:
-      - FLASK_ENV=development
+      - FLASK_ENV=testing
     build: .
     restart: always
     ports:

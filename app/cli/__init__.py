@@ -16,6 +16,7 @@ def create_database():
     if not os.path.exists(dbdir):
         os.mkdir(dbdir)
 
+
 @click.command(name='create-log-folder')
 @with_appcontext
 def create_log_folder():
