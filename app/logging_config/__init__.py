@@ -36,6 +36,15 @@ def setup_logs():
         os.mkdir(logdir)
     logging.config.dictConfig(LOGGING_CONFIG)
 
+    log = logging.getLogger("myApp")
+    log.info("My App Logger")
+    log = logging.getLogger("myerrors")
+    log.info("ERROR")
+    log = logging.getLogger("myrequests")
+    log.info("Before app first request logger")
+    log = logging.getLogger("mydebugs")
+    log.info("Before app first request debug logger")
+
 
 
 LOGGING_CONFIG = {
@@ -96,6 +105,20 @@ LOGGING_CONFIG = {
             'maxBytes': 10000000,
             'backupCount': 5,
         },
+        'file.handler.requests': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'standard',
+            'filename': 'app/logs/requests.log',
+            'maxBytes': 10000000,
+            'backupCount': 5,
+        },
+        'file.handler.debugs': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'standard',
+            'filename': 'app/logs/debugs.log',
+            'maxBytes': 10000000,
+            'backupCount': 5,
+        },
     },
     'loggers': {
         '': {  # root logger
@@ -125,6 +148,16 @@ LOGGING_CONFIG = {
         },
         'myerrors': {  # if __name__ == '__main__'
             'handlers': ['file.handler.errors'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'myrequests': {  # if __name__ == '__main__'
+            'handlers': ['file.handler.requests'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'mydebugs': {  # if __name__ == '__main__'
+            'handlers': ['file.handler.debugs'],
             'level': 'DEBUG',
             'propagate': False
         },
