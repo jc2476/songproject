@@ -2,7 +2,7 @@
 # pylint: disable=redefined-outer-name
 import logging
 import os
-
+import app
 import pytest
 from app import create_app, User
 from app.db import db
