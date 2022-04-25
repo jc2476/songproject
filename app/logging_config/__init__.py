@@ -13,7 +13,11 @@ log_con = flask.Blueprint('log_con', __name__)
 def before_request_logging():
     current_app.logger.info("Before Request")
     log = logging.getLogger("myApp")
-    log.info("My App Logger")
+    log.info("Before request My App Logger")
+    log = logging.getLogger("myrequests")
+    log.info("Before request Logger")
+    log = logging.getLogger("mydebugs")
+    log.info("Before request debug Logger")
 
 
 @log_con.after_app_request
@@ -27,7 +31,13 @@ def after_request_logging(response):
     current_app.logger.info("After Request")
 
     log = logging.getLogger("myApp")
-    log.info("My App Logger")
+    log.info("After App Request My App Logger")
+    log = logging.getLogger("myrequests")
+    log.info("After app request logger")
+    log = logging.getLogger("mydebugs")
+    log.info("After app request debug logger")
+    log = logging.getLogger("myerrors")
+    log.info("After app request error logger")
     return response
 
 
@@ -37,7 +47,11 @@ def configure_logging():
     log = logging.getLogger("myApp")
     log.info("My App Logger")
     log = logging.getLogger("myerrors")
-    log.info("THis broke")
+    log.info("Error logger")
+    log = logging.getLogger("myrequests")
+    log.info("Request logger")
+    log = logging.getLogger("mydebugs")
+    log.info("Debug logger")
 
 
 
@@ -79,7 +93,7 @@ LOGGING_CONFIG = {
         'file.handler.request': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'RequestFormatter',
-            'filename': 'app/logs/request.log',
+            'filename': 'app/logs/requests.log',
             'maxBytes': 10000000,
             'backupCount': 5,
         },
@@ -101,6 +115,20 @@ LOGGING_CONFIG = {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
             'filename': 'app/logs/werkzeug.log',
+            'maxBytes': 10000000,
+            'backupCount': 5,
+        },
+        'file.handler.requests': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'standard',
+            'filename': 'app/logs/requests.log',
+            'maxBytes': 10000000,
+            'backupCount': 5,
+        },
+        'file.handler.debugs': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'standard',
+            'filename': 'app/logs/debugs.log',
             'maxBytes': 10000000,
             'backupCount': 5,
         },
@@ -133,6 +161,16 @@ LOGGING_CONFIG = {
         },
         'myerrors': {  # if __name__ == '__main__'
             'handlers': ['file.handler.errors'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'myrequests': {  # if __name__ == '__main__'
+            'handlers': ['file.handler.requests'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'mydebugs': {  # if __name__ == '__main__'
+            'handlers': ['file.handler.debugs'],
             'level': 'DEBUG',
             'propagate': False
         },
