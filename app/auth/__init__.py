@@ -7,6 +7,8 @@ from app.auth.forms import login_form, register_form, profile_form, security_for
 from app.db import db
 from app.db.models import User
 
+from flask import current_app
+
 auth = Blueprint('auth', __name__, template_folder='templates')
 
 
@@ -26,6 +28,7 @@ def register():
                 db.session.add(user)
                 db.session.commit()
             flash('Congratulations, you are now a registered user!', "success")
+            current_app.logger.info("New user registered")
             return redirect(url_for('auth.login'), 302)
         else:
             flash('Already Registered')
@@ -48,6 +51,7 @@ def login():
             db.session.commit()
             login_user(user)
             flash("Welcome", 'success')
+            current_app.logger.info("User Login")
             return redirect(url_for('auth.dashboard'))
     return render_template('login.html', form=form)
 
@@ -60,6 +64,7 @@ def logout():
     db.session.add(user)
     db.session.commit()
     logout_user()
+    current_app.logger.info("User logout")
     return redirect(url_for('auth.login'))
 
 
@@ -79,6 +84,7 @@ def edit_profile():
         db.session.add(current_user)
         db.session.commit()
         flash('You Successfully Updated your Profile', 'success')
+        current_app.logger.info("Profile updated")
         return redirect(url_for('auth.dashboard'))
     return render_template('profile_edit.html', form=form)
 
