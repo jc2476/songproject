@@ -28,7 +28,7 @@ def register():
                 db.session.add(user)
                 db.session.commit()
             flash('Congratulations, you are now a registered user!', "success")
-            current_app.logger.info("New user registered")
+            current_app.logger.info(user.email + "New user registered")
             return redirect(url_for('auth.login'), 302)
         else:
             flash('Already Registered')
