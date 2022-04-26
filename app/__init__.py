@@ -8,6 +8,7 @@ from flask import Flask
 from flask_bootstrap import Bootstrap5
 from flask_wtf.csrf import CSRFProtect
 
+
 from app.auth import auth
 from app.auth import auth
 from app.cli import create_database
@@ -70,3 +71,4 @@ def user_loader(user_id):
         return User.query.get(int(user_id))
     except:
         return None
+
