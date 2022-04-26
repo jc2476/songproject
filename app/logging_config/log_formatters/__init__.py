@@ -35,4 +35,3 @@ class HandlerFormatter(logging.Formatter):
 
         return super().format(record)
 
-        return super().format(record)

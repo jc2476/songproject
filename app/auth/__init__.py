@@ -32,6 +32,7 @@ def register():
             return redirect(url_for('auth.login'), 302)
         else:
             flash('Already Registered')
+            current_app.logger.error("Already registered")
             return redirect(url_for('auth.login'), 302)
     return render_template('register.html', form=form)
 
@@ -44,6 +45,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
+            current_app.logger.warning("Invalid username or password")
             return redirect(url_for('auth.login'))
         else:
             user.authenticated = True
@@ -99,6 +101,7 @@ def edit_account():
         db.session.add(current_user)
         db.session.commit()
         flash('You Successfully Updated your Password or Email', 'success')
+        current_app.logger.info("Password or email updated")
         return redirect(url_for('auth.dashboard'))
     return render_template('manage_account.html', form=form)
 
@@ -141,7 +144,7 @@ def edit_user(user_id):
         db.session.add(user)
         db.session.commit()
         flash('User Edited Successfully', 'success')
-        current_app.logger.info("edited a user")
+        current_app.logger.info("Edited a user")
         return redirect(url_for('auth.browse_users'))
     return render_template('user_edit.html', form=form)
 
@@ -157,6 +160,7 @@ def add_user():
             db.session.add(user)
             db.session.commit()
             flash('Congratulations, you just created a user', 'success')
+            current_app.logger.info("Created a user")
             return redirect(url_for('auth.browse_users'))
         else:
             flash('Already Registered')

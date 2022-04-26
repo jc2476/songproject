@@ -53,7 +53,7 @@ LOGGING_CONFIG = {
 
         'HandlerFormatter': {
             '()': 'app.logging_config.log_formatters.HandlerFormatter',
-            'format': '[%(asctime)s] %(message)s from %(remote_addr)s'
+            'format': '[%(asctime)s] [%(levelname)s] %(message)s from %(remote_addr)s'
         }
 
     },
