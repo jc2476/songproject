@@ -28,11 +28,11 @@ def register():
                 db.session.add(user)
                 db.session.commit()
             flash('Congratulations, you are now a registered user!', "success")
-            current_app.logger.info(user.email + "New user registered")
+            current_app.logger.info("New user " +user.email + " registered")
             return redirect(url_for('auth.login'), 302)
         else:
             flash('Already Registered')
-            current_app.logger.error("Already registered")
+            current_app.logger.error(user.email + " Already registered")
             return redirect(url_for('auth.login'), 302)
     return render_template('register.html', form=form)
 
@@ -45,7 +45,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
-            current_app.logger.warning("Invalid username or password")
+            current_app.logger.warning(user.email + " Invalid username or password")
             return redirect(url_for('auth.login'))
         else:
             user.authenticated = True
@@ -53,7 +53,7 @@ def login():
             db.session.commit()
             login_user(user)
             flash("Welcome", 'success')
-            current_app.logger.info("User Login")
+            current_app.logger.info(user.email + " User Login")
             return redirect(url_for('auth.dashboard'))
     return render_template('login.html', form=form)
 
@@ -66,7 +66,7 @@ def logout():
     db.session.add(user)
     db.session.commit()
     logout_user()
-    current_app.logger.info("User logout")
+    current_app.logger.info(user.email + " User logout")
     return redirect(url_for('auth.login'))
 
 
@@ -86,7 +86,7 @@ def edit_profile():
         db.session.add(current_user)
         db.session.commit()
         flash('You Successfully Updated your Profile', 'success')
-        current_app.logger.info("Profile updated")
+        current_app.logger.info(user.email + " Profile updated")
         return redirect(url_for('auth.dashboard'))
     return render_template('profile_edit.html', form=form)
 
@@ -101,7 +101,7 @@ def edit_account():
         db.session.add(current_user)
         db.session.commit()
         flash('You Successfully Updated your Password or Email', 'success')
-        current_app.logger.info("Password or email updated")
+        current_app.logger.info(user.email + " Password or email updated")
         return redirect(url_for('auth.dashboard'))
     return render_template('manage_account.html', form=form)
 
@@ -120,7 +120,7 @@ def browse_users():
     add_url = url_for('auth.add_user')
     delete_url = ('auth.delete_user', [('user_id', ':id')])
 
-    current_app.logger.info("Browse page loading")
+    current_app.logger.info(user.email + " Browse page loading")
 
     return render_template('browse.html', titles=titles, add_url=add_url, edit_url=edit_url, delete_url=delete_url,
                            retrieve_url=retrieve_url, data=data, User=User, record_type="Users")
@@ -144,7 +144,7 @@ def edit_user(user_id):
         db.session.add(user)
         db.session.commit()
         flash('User Edited Successfully', 'success')
-        current_app.logger.info("Edited a user")
+        current_app.logger.info(user.email + " Edited a user")
         return redirect(url_for('auth.browse_users'))
     return render_template('user_edit.html', form=form)
 
@@ -160,7 +160,7 @@ def add_user():
             db.session.add(user)
             db.session.commit()
             flash('Congratulations, you just created a user', 'success')
-            current_app.logger.info("Created a user")
+            current_app.logger.info(user.email + " Created a user")
             return redirect(url_for('auth.browse_users'))
         else:
             flash('Already Registered')
