@@ -96,6 +96,20 @@ LOGGING_CONFIG = {
             'maxBytes': 10000000,
             'backupCount': 5,
         },
+        'file.handler.requests': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'standard',
+            'filename': os.path.join(config.Config.LOG_DIR,'requests.log'),
+            'maxBytes': 10000000,
+            'backupCount': 5,
+        },
+        'file.handler.debugs': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'standard',
+            'filename': os.path.join(config.Config.LOG_DIR,'debugs.log'),
+            'maxBytes': 10000000,
+            'backupCount': 5,
+        },
     },
     'loggers': {
         '': {  # root logger
@@ -125,6 +139,16 @@ LOGGING_CONFIG = {
         },
         'myerrors': {  # if __name__ == '__main__'
             'handlers': ['file.handler.errors'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'myrequests': {  # if __name__ == '__main__'
+            'handlers': ['file.handler.requests'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'mydebugs': {  # if __name__ == '__main__'
+            'handlers': ['file.handler.debugs'],
             'level': 'DEBUG',
             'propagate': False
         },
