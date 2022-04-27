@@ -65,7 +65,7 @@ def logout():
     db.session.add(user)
     db.session.commit()
     logout_user()
-    current_app.logger.info(user.email + " User Login")
+    #current_app.logger.info(user.email + " User Login")
     return redirect(url_for('auth.login'))
 
 
@@ -117,7 +117,7 @@ def browse_users():
     edit_url = ('auth.edit_user', [('user_id', ':id')])
     add_url = url_for('auth.add_user')
     delete_url = ('auth.delete_user', [('user_id', ':id')])
-    current_app.logger.info(user.email + " Browse page loading")
+    #current_app.logger.info(user.email + " Browse page loading")
     return render_template('browse.html', titles=titles, add_url=add_url, edit_url=edit_url, delete_url=delete_url,
                            retrieve_url=retrieve_url, data=data, User=User, record_type="Users")
 
