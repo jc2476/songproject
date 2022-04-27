@@ -7,6 +7,7 @@ from flask import request, current_app
 
 from app.logging_config.log_formatters import RequestFormatter
 from app.logging_config.log_formatters import HandlerFormatter
+from app.logging_config.log_formatters import CSVFormatter
 from app import config
 
 log_con = flask.Blueprint('log_con', __name__)
@@ -15,6 +16,9 @@ log_con = flask.Blueprint('log_con', __name__)
 # @log_con.before_app_request
 # def before_request_logging():
 
+def CSV_file_upload():
+    log=logging.getLogger("myCSVuploads")
+    log.info("New CSV uploaded")
 
 @log_con.after_app_request
 def after_request_logging(response):
@@ -25,6 +29,8 @@ def after_request_logging(response):
     elif request.path.startswith('/bootstrap'):
         return response
     return response
+
+
 
 
 @log_con.before_app_first_request
@@ -54,7 +60,12 @@ LOGGING_CONFIG = {
         'HandlerFormatter': {
             '()': 'app.logging_config.log_formatters.HandlerFormatter',
             'format': '[%(asctime)s] %(levelname)s METHOD: %(request_method)s FILENAME:%(filename)s FUNCTION NAME:%(funcName)s() LINE:%(lineno)s] %(message)s from %(remote_addr)s'
-        }
+        },
+
+        'CSVFormatter': {
+            '()': 'app.logging_config.log_formatters.CSVFormatter',
+            'format': '[%(asctime)s] %(levelname)s METHOD: %(request_method)s FILENAME:%(filename)s FUNCTION NAME:%(funcName)s() LINE:%(lineno)s] %(message)s from %(remote_addr)s'
+        },
 
     },
     'handlers': {
@@ -120,6 +131,13 @@ LOGGING_CONFIG = {
             'maxBytes': 10000000,
             'backupCount': 5,
         },
+        'file.handler.CSVUploads': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'CSVFormatter',
+            'filename': os.path.join(config.Config.LOG_DIR, 'CSVUploads.log'),
+            'maxBytes': 10000000,
+            'backupCount': 5,
+        },
     },
     'loggers': {
         '': {  # root logger
@@ -162,6 +180,10 @@ LOGGING_CONFIG = {
             'level': 'DEBUG',
             'propagate': False
         },
-
+        'myCSVuploads': {  # if __name__ == '__main__'
+            'handlers': ['file.handler.CSVUploads'],
+            'level': 'INFO',
+            'propagate': False
+        },
     }
 }
