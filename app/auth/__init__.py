@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, redirect, url_for, flash, current_
 from flask_login import login_user, login_required, logout_user, current_user
 from sqlalchemy.sql.functions import user
 from werkzeug.security import generate_password_hash
-
 from app.auth.decorators import admin_required
 from app.auth.forms import login_form, register_form, profile_form, security_form, user_edit_form
 from app.db import db
