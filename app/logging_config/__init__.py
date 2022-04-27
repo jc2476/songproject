@@ -47,13 +47,13 @@ LOGGING_CONFIG = {
 
         'RequestFormatter': {
             '()': 'app.logging_config.log_formatters.RequestFormatter',
-            'format': '[%(asctime)s] [%(process)d] %(remote_addr)s requested %(url)s'
+            'format': '[%(asctime)s] [%(process)s] %(remote_addr)s requested %(url)s'
                       '%(levelname)s in %(module)s: %(message)s'
         },
 
         'HandlerFormatter': {
             '()': 'app.logging_config.log_formatters.HandlerFormatter',
-            'format': '[%(asctime)s] [%(levelname)s] %(message)s from %(remote_addr)s'
+            'format': '[%(asctime)s] %(levelname)s METHOD: %(request_method)s FILENAME:%(filename)s FUNCTION NAME:%(funcName)s() LINE:%(lineno)s] %(message)s from %(remote_addr)s'
         }
 
     },

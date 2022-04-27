@@ -1,13 +1,12 @@
-from flask import Blueprint, render_template, redirect, url_for, flash,current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, current_app
 from flask_login import login_user, login_required, logout_user, current_user
+from sqlalchemy.sql.functions import user
 from werkzeug.security import generate_password_hash
 
 from app.auth.decorators import admin_required
 from app.auth.forms import login_form, register_form, profile_form, security_form, user_edit_form
 from app.db import db
 from app.db.models import User
-
-from flask import current_app
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
@@ -57,6 +56,7 @@ def login():
             return redirect(url_for('auth.dashboard'))
     return render_template('login.html', form=form)
 
+
 @auth.route("/logout")
 @login_required
 def logout():
@@ -66,9 +66,8 @@ def logout():
     db.session.add(user)
     db.session.commit()
     logout_user()
-    current_app.logger.info(user.email + " User logout")
+    current_app.logger.info(user.email + " User Login")
     return redirect(url_for('auth.login'))
-
 
 
 @auth.route('/dashboard')
@@ -119,9 +118,7 @@ def browse_users():
     edit_url = ('auth.edit_user', [('user_id', ':id')])
     add_url = url_for('auth.add_user')
     delete_url = ('auth.delete_user', [('user_id', ':id')])
-
     current_app.logger.info(user.email + " Browse page loading")
-
     return render_template('browse.html', titles=titles, add_url=add_url, edit_url=edit_url, delete_url=delete_url,
                            retrieve_url=retrieve_url, data=data, User=User, record_type="Users")
 
