@@ -15,3 +15,9 @@ def test_auth_pages(client):
     assert response.status_code == 200
     response = client.get("/login")
     assert response.status_code == 200
+
+def test_deny_access(client):
+    response = client.get("/browse_songs")
+    assert response.status_code == 404
+    response = client.get("/upload")
+    assert response.status_code == 404

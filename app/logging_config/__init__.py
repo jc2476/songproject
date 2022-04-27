@@ -4,6 +4,7 @@ from logging.config import dictConfig
 
 import flask
 from flask import request, current_app
+from sqlalchemy.sql.functions import user
 
 from app.logging_config.log_formatters import RequestFormatter
 from app.logging_config.log_formatters import HandlerFormatter
@@ -14,7 +15,8 @@ log_con = flask.Blueprint('log_con', __name__)
 
 
 # @log_con.before_app_request
-# def before_request_logging():
+def before_request_logging():
+    current_app.logger.info(user.email)
 
 def CSV_file_upload():
     log=logging.getLogger("myCSVuploads")
