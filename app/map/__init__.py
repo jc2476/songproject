@@ -58,7 +58,6 @@ def map_locations():
         abort(404)
 
 
-
 @map.route('/locations/upload', methods=['POST', 'GET'])
 @login_required
 def location_upload():
