@@ -17,9 +17,7 @@ def application():
     #os.environ['FLASK_ENV'] = 'development'
     #you need to run it in testing to pass on github
     os.environ['FLASK_ENV'] = 'testing'
-
     application = create_app()
-
     with application.app_context():
         db.create_all()
         application.config['WTF_CSRF_ENABLED'] = False
