@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, abort, url_for,current_app
 from flask_login import current_user, login_required
 from jinja2 import TemplateNotFound
 
-from app.db import db
+from app.db import db, database
 from app.db.models import Song
 from app.logging_config import CSV_file_upload
 from app.songs.forms import csv_upload
@@ -53,3 +53,8 @@ def songs_upload():
         return render_template('upload.html', form=form)
     except TemplateNotFound:
         abort(404)
+
+@songs.route('/info/<id>')
+def info(id):
+    user_info = database.query.filter_by(id=id).first()
+    return render_template('dashboard.html', information=user_info)

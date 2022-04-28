@@ -9,22 +9,13 @@ def test_adding_user(application):
     with application.app_context():
         assert db.session.query(User).count() == 0
         assert db.session.query(Song).count() == 0
-        #showing how to add a record
-        #create a record
         user = User('test@test.com', 'testtest')
-        #add it to get ready to be committed
         db.session.add(user)
-        #call the commit
         db.session.commit()
-        #assert that we now have a new user
         assert db.session.query(User).count() == 1
-        #finding one user record by email
         user = User.query.filter_by(email='test@test.com').first()
         log.info(user)
-        #asserting that the user retrieved is correct
         assert user.email == 'test@test.com'
-        #this is how you get a related record ready for insert
-
         user.songs = [Song("test","smap","dsf","sdf"),Song("test2","te","dsf","sdf")]
         db.session.commit()
         assert db.session.query(Song).count() == 2
@@ -37,3 +28,24 @@ def test_adding_user(application):
         db.session.delete(user)
         assert db.session.query(User).count() == 0
         assert db.session.query(Song).count() == 0
+
+
+def test_register(client):
+    """This will test the register function"""
+
+    """ POST to /register """
+    new_email = 'newuser@test.test'
+    new_password = 'Test1234!'
+    data = {
+        'email': new_email,
+        'password': new_password,
+        'confirm': new_password
+    }
+    response = client.post('/register', data=data)
+    assert response.status_code == 302
+
+    # verify new user is in database
+    new_user = User.query.filter_by(email=new_email).first()
+    assert new_user.email == new_email
+
+    db.session.delete(new_user)  # pylint: disable=no-member
