@@ -1,8 +1,6 @@
 """This makes the test configuration setup"""
 # pylint: disable=redefined-outer-name
-import logging
 import os
-import app
 import pytest
 from app import create_app, User
 from app.db import db
@@ -34,14 +32,10 @@ def add_user(application):
         db.session.add(user)
         db.session.commit()
 
-
-
-
 @pytest.fixture()
 def client(application):
     """This makes the http client"""
     return application.test_client()
-
 
 @pytest.fixture()
 def runner(application):

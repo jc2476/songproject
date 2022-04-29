@@ -23,6 +23,3 @@ def test_log_folder():
     dbdir = os.path.join(root, '../logs')
     # make a directory if it doesn't exist
     assert os.path.exists(dbdir) == True
-
-
-    
