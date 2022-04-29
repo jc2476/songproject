@@ -7,6 +7,6 @@ def test_deny_access(client):
 
 
 def test_deny_upload(client):
-    response = client.get("/upload")
-    assert response.status_code == 404
-
+    response = client.get("/songs/upload", follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Login" in response.data
