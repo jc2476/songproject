@@ -1,6 +1,7 @@
 import pytest
 import unittest
 
+
 class MyTest(unittest.TestCase):
     @pytest.fixture(autouse=True)
     def initdir(self, tmpdir):
